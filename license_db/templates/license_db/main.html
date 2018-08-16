@@ -1,0 +1,21 @@
+{% extends "license_db/index.html" %}
+
+{% block content %}
+  <div class="license-list">
+    <span class="lic-list-header">Name</span>
+    <span class="lic-list-header">Quantity</span>
+    <span class="lic-list-header">Expires</span>
+    <span class="lic-list-header">Comment</span>
+  {% for license in licenses %}
+    <span class="lic-name">{{ license.name }}</span>
+    <span class="lic-quantity">{{ license.quantity }}</span>
+    <span class="lic-expires">{{ license.expires }}</span>
+    <span class="lic-comment">{{ license.comment }}</span>
+  {% endfor %}
+  </div>
+{#  <ul>#}
+{#  {% for license in licenses %}#}
+{#    <li>{{ license.name }} - {{ license.quantity }} - {{ license.expires }} - {{ license.comment }} - {{ license.created }} - {{ license.modified }}</li>#}
+{#  {% endfor %}#}
+{#  </ul>#}
+{% endblock %}
