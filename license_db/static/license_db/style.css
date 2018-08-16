@@ -1,9 +1,14 @@
+html {
+  height: 100%;
+}
+
 body {
   display: grid;
-  grid-template-rows: 100px auto 100px;
-  grid-template-columns: 3fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 5fr 1fr;
+  height: 100%;
   grid-gap: 1em;
-  /*padding: 1em;*/
+  margin: 0 2em;
 }
 
 header,
@@ -11,28 +16,37 @@ main,
 nav,
 footer {
   padding: 1em;
-  /*background: #eaeaea;*/
+
+}
+
+header,
+footer {
+  grid-column: 1 / span 2;
+  display: flex;
+  justify-content: center;
 }
 
 header {
-  grid-column: 1 / span 2;
+  border-bottom: lightgray solid thin;
 }
 
 main {
+
 }
 
 nav {
+  border-left: lightgray solid thin;
 }
 
 footer {
-  grid-column: 1 / span 2;
+  border-top: lightgray solid thin;
 }
 
 .license-list {
   display: grid;
   grid-template-columns: repeat(4, max-content);
   grid-auto-rows: min-content;
-  /*border: transparent;*/
+  justify-content: center;
 }
 
 .lic-list-header {
@@ -45,7 +59,7 @@ footer {
 .lic-quantity,
 .lic-expires,
 .lic-comment {
-  padding: 3px 20px;
+  padding: 0.3em 1em;
   border-bottom: lightgray solid thin;
 }
 
