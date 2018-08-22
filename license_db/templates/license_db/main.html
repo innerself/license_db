@@ -2,20 +2,27 @@
 
 {% block content %}
   <div class="license-list">
-    <span class="lic-list-header">Name</span>
-    <span class="lic-list-header">Quantity</span>
-    <span class="lic-list-header">Expires</span>
-    <span class="lic-list-header">Comment</span>
-  {% for license in licenses %}
-    <span class="lic-name">{{ license.name }}</span>
-    <span class="lic-quantity">{{ license.quantity }}</span>
-    <span class="lic-expires">{{ license.expires }}</span>
-    <span class="lic-comment">{{ license.comment }}</span>
-  {% endfor %}
+    {% for lic_type, licenses in licenses.items %}
+      <button class="lic-type-button btn btn-primary" type="button"
+              data-toggle="collapse" data-target="#{{ lic_type }}-list">
+        {{ lic_type | capfirst }}
+      </button>
+
+{#      <div class="license-group collapse" id="{{ lic_type }}-list">#}
+      <div class="collapse-wrapper collapse" id="{{ lic_type }}-list">
+        <div class="license-group">
+          <span class="lic-list-header">Name</span>
+          <span class="lic-list-header">Quantity</span>
+          <span class="lic-list-header">Expires</span>
+          <span class="lic-list-header">Comment</span>
+          {% for license in licenses %}
+            <span class="lic-name">{{ license.name }}</span>
+            <span class="lic-quantity">{{ license.quantity }}</span>
+            <span class="lic-expires">{{ license.expires }}</span>
+            <span class="lic-comment">{{ license.comment }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
   </div>
-{#  <ul>#}
-{#  {% for license in licenses %}#}
-{#    <li>{{ license.name }} - {{ license.quantity }} - {{ license.expires }} - {{ license.comment }} - {{ license.created }} - {{ license.modified }}</li>#}
-{#  {% endfor %}#}
-{#  </ul>#}
 {% endblock %}
