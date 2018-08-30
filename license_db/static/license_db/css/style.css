@@ -103,7 +103,7 @@ footer {
 .lic-group-header-row,
 .lic-group-item {
   display: grid;
-  grid-template-columns: 5fr 1fr 2fr 8fr;
+  grid-template-columns: 3fr 1fr 1fr 1fr 6fr;
 }
 
 .lic-group-header-row {

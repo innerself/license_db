@@ -36,6 +36,7 @@
         <div class="license-group">
           <div class="lic-group-header-row">
             <span class="lic-group-header-item">Name</span>
+            <span class="lic-group-header-item">Subtype</span>
             <span class="lic-group-header-item">Quantity</span>
             <span class="lic-group-header-item">Expires</span>
             <span class="lic-group-header-item">Comment</span>
@@ -43,9 +44,10 @@
           {% for license in licenses %}
             <div class="lic-group-item">
               <span class="lic-name">{{ license.name }}</span>
+              <span class="lic-name">{{ license.subtype | default_if_none:'-' }}</span>
               <span class="lic-quantity">{{ license.quantity }}</span>
-              <span class="lic-expires">{{ license.expires }}</span>
-              <span class="lic-comment">{{ license.comment }}</span>
+              <span class="lic-expires">{{ license.expires | date:'d.m.Y' }}</span>
+              <span class="lic-comment">{{ license.comment | default:'-' }}</span>
             </div>
           {% endfor %}
         </div>

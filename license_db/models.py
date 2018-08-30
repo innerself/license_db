@@ -4,13 +4,20 @@ from django.db import models
 
 
 class License(models.Model):
-    TYPES = (
-        ('hardware', 'hardware'),
-        ('software', 'software'),
-    )
-
     name = models.CharField('name', max_length=200)
-    type = models.CharField('type', max_length=50, choices=TYPES)
+    type = models.ForeignKey(
+        'LicenseType',
+        on_delete=models.CASCADE,
+        # on_delete=models.SET_NULL,
+        # blank=True,
+        # null=True,
+    )
+    subtype = models.ForeignKey(
+        'LicenseSubtype',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
     quantity = models.PositiveIntegerField('quantity', default=0)
     expires = models.DateField('expires', default=date.today() + timedelta(days=365))
     comment = models.CharField('comment', max_length=200, blank=True)
@@ -18,7 +25,7 @@ class License(models.Model):
     modified = models.DateTimeField('modified', auto_now=True)
 
     def __str__(self):
-        return f'{self.name} ({self.id})'
+        return self.name
 
     @classmethod
     def _generate(cls, number: int) -> None:
@@ -28,10 +35,34 @@ class License(models.Model):
         business = Business()
         text = Text()
 
+        lic_types = (
+            'software',
+            'hardware',
+        )
+
+        for lic_type in lic_types:
+            LicenseType.objects.create(
+                name=lic_type,
+            )
+
         for _ in range(number):
             License.objects.create(
                 name=business.company(),
-                type=choice(cls.TYPES)[0],
+                type=choice(LicenseType.objects.all()),
                 quantity=randint(0, 10000),
                 comment=text.quote(),
             )
+
+
+class LicenseType(models.Model):
+    name = models.CharField('type', max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class LicenseSubtype(models.Model):
+    name = models.CharField('subtype', max_length=200)
+
+    def __str__(self):
+        return self.name
