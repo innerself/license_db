@@ -27,12 +27,16 @@ searchArea.on("input", function () {
   licenseRows.each(function () {
     const currentRow = $(this);
 
-    if (rowHasText($(this), currentSearch)) {
+    if (rowHasText(currentRow, currentSearch)) {
       currentRow.show()
+      // TODO Highlight found text in the row (make red)
     } else {
       currentRow.hide()
+      // TODO Hide category if it becomes empty
     }
   })
+
+
 });
 
 btnExpand.click(function () {
