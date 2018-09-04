@@ -7,7 +7,8 @@ from .models import License, LicenseType
 
 def index(request):
     context = {
-        'logo': config('LOGO', default='Logo'),
+        'logo': config('LOGO', default='My Logo'),
+        'site_title': config('SITE_TITLE', default='My Site'),
         'licenses': dict(),
     }
 
@@ -16,8 +17,6 @@ def index(request):
         for item in LicenseType.objects.values('name')
         for _, value in item.items()
     ])
-
-    # lic_types.add(None)
 
     for lic_type in lic_types:
         context['licenses'][lic_type] = License.objects.filter(

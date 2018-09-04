@@ -35,8 +35,6 @@ searchArea.on("input", function () {
       // TODO Hide category if it becomes empty
     }
   })
-
-
 });
 
 btnExpand.click(function () {

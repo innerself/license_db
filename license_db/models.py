@@ -8,9 +8,6 @@ class License(models.Model):
     type = models.ForeignKey(
         'LicenseType',
         on_delete=models.CASCADE,
-        # on_delete=models.SET_NULL,
-        # blank=True,
-        # null=True,
     )
     subtype = models.ForeignKey(
         'LicenseSubtype',
@@ -52,6 +49,8 @@ class License(models.Model):
                 quantity=randint(0, 10000),
                 comment=text.quote(),
             )
+
+        return None
 
 
 class LicenseType(models.Model):
