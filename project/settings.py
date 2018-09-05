@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+import ldap
+from django_auth_ldap.config import LDAPSearch, ActiveDirectoryGroupType
+
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -50,6 +53,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -121,3 +129,37 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Active Directory
+AUTH_LDAP_SERVER_URI = config('LDAP_SERVER')
+AUTH_LDAP_BIND_DN = config('SEARCH_ACCOUNT')
+AUTH_LDAP_BIND_PASSWORD = config('SEARCH_ACCOUNT_PASSWORD')
+
+AUTH_LDAP_CONNECTION_OPTIONS = {
+    ldap.OPT_REFERRALS: 0,
+}
+
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    config('USER_SEARCH_OU'),
+    ldap.SCOPE_SUBTREE,
+    "(sAMAccountName=%(user)s)"
+)
+
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail",
+}
+
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+    config('GROUP_SEARCH_OU'),
+    ldap.SCOPE_SUBTREE,
+    "(objectClass=group)"
+)
+AUTH_LDAP_GROUP_TYPE = ActiveDirectoryGroupType()
+
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+   # "is_active":    "cn=it,ou=Groups,o=loc",
+   "is_staff":     config('ADMINS_GROUP'),
+   "is_superuser": config('ADMINS_GROUP'),
+}

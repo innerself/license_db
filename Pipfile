@@ -7,6 +7,8 @@ name = "pypi"
 django = "*"
 mimesis = "*"
 python-decouple = "*"
+python-ldap = "*"
+django-auth-ldap = "*"
 
 [dev-packages]
 
