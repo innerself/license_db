@@ -24,7 +24,7 @@
         </span>
         <span>{{ request.user.get_full_name }}</span>
         <span>
-          <a href="{% url 'license_db:auth_out' %}">
+          <a href="{% url 'license_db:auth' action='logout' %}">
             <img src="{% static 'license_db/img/log-out.svg' %}">
           </a>
         </span>

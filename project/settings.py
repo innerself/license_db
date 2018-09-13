@@ -163,3 +163,5 @@ AUTH_LDAP_USER_FLAGS_BY_GROUP = {
    "is_staff":     config('ADMINS_GROUP'),
    "is_superuser": config('ADMINS_GROUP'),
 }
+
+LOGOUT_REDIRECT_URL = '/'

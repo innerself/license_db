@@ -7,7 +7,11 @@ from decouple import config
 from .models import License, LicenseType
 
 
-def auth(request):
+def auth(request, action='login'):
+    if action == 'logout':
+        logout(request)
+        return redirect('license_db:auth')
+
     context = {
         'logo': config('LOGO', default='My Logo'),
         'site_title': config('SITE_TITLE', default='My Site'),
@@ -28,14 +32,9 @@ def auth(request):
 
         if user is not None:
             login(request, user)
-            return redirect('/', user)
+            return redirect('license_db:index')
     else:
         return render(request, 'license_db/auth.html', context)
-
-
-def auth_out(request):
-    logout(request)
-    return redirect('/')
 
 
 def index(request):
