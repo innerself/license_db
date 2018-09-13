@@ -25,9 +25,10 @@
     </div>
   </div>
 
+  {% if licenses %}
   <div class="license-list">
     {% for lic_type, licenses in licenses.items %}
-      <button class="lic-type-button btn btn-primary" type="button"
+      <button class="lic-type-button btn btn-secondary" type="button"
               data-toggle="collapse" data-target="#{{ lic_type }}-list">
         {{ lic_type | capfirst }}
       </button>
@@ -54,4 +55,5 @@
       </div>
     {% endfor %}
   </div>
+  {% endif %}
 {% endblock %}
