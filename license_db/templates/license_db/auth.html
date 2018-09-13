@@ -3,9 +3,7 @@
 {% block content %}
   <div class="login-group-wrapper">
     <form class="login-group" name="login-group" method="post">
-{#    <form class="login" name="login-group" method="post">#}
       {% csrf_token %}
-{#      {{ form.as_p }}#}
       <div id="login-login" class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text">{{ login.prefix }}</span>
