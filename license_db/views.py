@@ -18,7 +18,8 @@ def auth(request, action='login'):
         'login': {
             'prefix': config('LOGIN_PREFIX', default='DOMAIN\\'),
             'placeholder': config('LOGIN_PLACEHOLDER', default='Login'),
-        }
+        },
+        'access_denied': False,
     }
 
     if request.method == 'POST':
@@ -30,11 +31,13 @@ def auth(request, action='login'):
             password=password,
         )
 
-        if user is not None:
+        if user is not None and user.is_staff:
             login(request, user)
             return redirect('license_db:index')
-    else:
-        return render(request, 'license_db/auth.html', context)
+        else:
+            context['access_denied'] = True
+
+    return render(request, 'license_db/auth.html', context)
 
 
 def index(request):

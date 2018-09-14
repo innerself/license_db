@@ -3,6 +3,11 @@
 {% block content %}
   <div class="login-group-wrapper">
     <form class="login-group" name="login-group" method="post">
+      {% if access_denied %}
+      <div id="login-error" class="alert alert-danger" role="alert">
+        Ouch! Access denied!
+      </div>
+      {% endif %}
       {% csrf_token %}
       <div id="login-login" class="input-group">
         <div class="input-group-prepend">

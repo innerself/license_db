@@ -18,14 +18,15 @@
       <div class="user">
       {% if request.user.is_authenticated %}
         <span>
-          <a href="{% url 'admin:index' %}">
+          <a href="{% url 'admin:index' %}" title="Edit licenses">
             <img id="button-edit" src="{% static 'license_db/img/edit.svg' %}">
           </a>
         </span>
         <span id="user-full-name">{{ request.user.get_full_name }}</span>
         <span>
-          <a href="{% url 'license_db:auth' action='logout' %}">
-            <img src="{% static 'license_db/img/log-out.svg' %}">
+          <a href="{% url 'license_db:auth' action='logout' %}"
+             title="Logout">
+            <img id="button-logout" src="{% static 'license_db/img/log-out.svg' %}">
           </a>
         </span>
       {% endif %}
