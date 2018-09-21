@@ -3,7 +3,8 @@ const licenseRows = $(".lic-group-item");
 
 const btnExpand = $("#expand-all");
 const btnCollapse = $("#collapse-all");
-const groupBtn = $(".lic-type-button");
+const groupBtn = $(".collapse-button");
+// const groupBtn = $(".lic-category-button");
 
 function rowHasText(row, text) {
   let hasText = false;

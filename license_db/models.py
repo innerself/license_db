@@ -5,6 +5,10 @@ from django.db import models
 
 class License(models.Model):
     name = models.CharField('name', max_length=200)
+    location = models.ForeignKey(
+        'LicenseLocation',
+        on_delete=models.CASCADE,
+    )
     type = models.ForeignKey(
         'LicenseType',
         on_delete=models.CASCADE,
@@ -32,6 +36,17 @@ class License(models.Model):
         business = Business()
         text = Text()
 
+        lic_locations = (
+            'store',
+            'central office',
+            'data center',
+        )
+
+        for lic_location in lic_locations:
+            LicenseLocation.objects.create(
+                name=lic_location,
+            )
+
         lic_types = (
             'software',
             'hardware',
@@ -45,12 +60,20 @@ class License(models.Model):
         for _ in range(number):
             License.objects.create(
                 name=business.company(),
+                location=choice(LicenseLocation.objects.all()),
                 type=choice(LicenseType.objects.all()),
                 quantity=randint(0, 10000),
                 comment=text.quote(),
             )
 
         return None
+
+
+class LicenseLocation(models.Model):
+    name = models.CharField('location', max_length=200)
+
+    def __str__(self):
+        return self.name
 
 
 class LicenseType(models.Model):

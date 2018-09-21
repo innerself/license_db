@@ -25,35 +25,48 @@
     </div>
   </div>
 
-  {% if licenses %}
-  <div class="license-list">
-    {% for lic_type, licenses in licenses.items %}
-      <button class="lic-type-button btn btn-secondary" type="button"
-              data-toggle="collapse" data-target="#{{ lic_type }}-list">
-        {{ lic_type | capfirst }}
-      </button>
+  {% if lic_tree %}
+    <div class="view-page-container">
+      {% for category, locations in lic_tree.items %}
+        <button class="lic-category-button collapse-button btn"
+                type="button" data-toggle="collapse"
+                data-target="#view-{{ category | cut:" " }}-container">
+          {{ category | capfirst }}
+        </button>
 
-      <div class="collapse-wrapper collapse show" id="{{ lic_type }}-list">
-        <div class="license-group">
-          <div class="lic-group-header-row">
-            <span class="lic-group-header-item">Name</span>
-            <span class="lic-group-header-item">Subtype</span>
-            <span class="lic-group-header-item">Quantity</span>
-            <span class="lic-group-header-item">Expires</span>
-            <span class="lic-group-header-item">Comment</span>
-          </div>
-          {% for license in licenses %}
-            <div class="lic-group-item">
-              <span class="lic-name">{{ license.name }}</span>
-              <span class="lic-name">{{ license.subtype | default_if_none:'-' }}</span>
-              <span class="lic-quantity">{{ license.quantity }}</span>
-              <span class="lic-expires">{{ license.expires | date:'d.m.Y' }}</span>
-              <span class="lic-comment">{{ license.comment | default:'-' }}</span>
+        <div id="view-{{ category | cut:" "}}-container"
+             class="view-category-container collapse show">
+
+          {% for location, licenses in locations.items %}
+            <button class="lic-location-button collapse-button btn"
+                    type="button" data-toggle="collapse"
+                    data-target="#view-{{ category | cut:" "}}-{{ location | cut:" " }}-container">
+              {{ location | capfirst }}
+            </button>
+
+            <div id="view-{{ category | cut:" "}}-{{ location | cut:" "}}-container"
+                 class="license-group collapse show">
+              <div class="lic-group-header-row">
+                <span class="lic-group-header-item">Name</span>
+                <span class="lic-group-header-item">Type</span>
+                <span class="lic-group-header-item">Quantity</span>
+                <span class="lic-group-header-item">Expires</span>
+                <span class="lic-group-header-item">Comment</span>
+              </div>
+
+              {% for license in licenses %}
+                <div class="lic-group-item">
+                  <span class="lic-name">{{ license.name }}</span>
+                  <span class="lic-name">{{ license.subtype | default_if_none:'-' }}</span>
+                  <span class="lic-quantity">{{ license.quantity }}</span>
+                  <span class="lic-expires">{{ license.expires | date:'d.m.Y' }}</span>
+                  <span class="lic-comment">{{ license.comment | default:'-' }}</span>
+                </div>
+              {% endfor %}
             </div>
           {% endfor %}
         </div>
-      </div>
-    {% endfor %}
-  </div>
+      {% endfor %}
+    </div>
   {% endif %}
 {% endblock %}

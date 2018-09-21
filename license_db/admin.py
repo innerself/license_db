@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import License, LicenseType, LicenseSubtype
-
-# admin.site.register(License)
+from .models import (
+    License, LicenseLocation, LicenseType, LicenseSubtype
+)
 
 
 class LicenseAdmin(admin.ModelAdmin):
@@ -10,5 +10,6 @@ class LicenseAdmin(admin.ModelAdmin):
 
 
 admin.site.register(License, LicenseAdmin)
+admin.site.register(LicenseLocation)
 admin.site.register(LicenseType)
 admin.site.register(LicenseSubtype)

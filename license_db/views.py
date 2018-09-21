@@ -4,7 +4,7 @@ from django.db import OperationalError
 
 from decouple import config
 
-from .models import License, LicenseType
+from .models import License, LicenseType, LicenseLocation
 
 
 def auth(request, action='login'):
@@ -47,21 +47,18 @@ def index(request):
     context = {
         'logo': config('LOGO', default='My Logo'),
         'site_title': config('SITE_TITLE', default='My Site'),
-        'licenses': dict(),
     }
 
-    try:
-        lic_types = set([
-            value
-            for item in LicenseType.objects.values('name')
-            for _, value in item.items()
-        ])
-    except OperationalError:
-        lic_types = set()
+    lic_tree = {}
+    for lic in License.objects.all():
+        if lic.type.name not in lic_tree.keys():
+            lic_tree[lic.type.name] = {}
 
-    for lic_type in lic_types:
-        context['licenses'][lic_type] = License.objects.filter(
-            type__name=lic_type,
-        )
+        if lic.location.name not in lic_tree[lic.type.name].keys():
+            lic_tree[lic.type.name][lic.location.name] = []
+
+        lic_tree[lic.type.name][lic.location.name].append(lic)
+
+    context['lic_tree'] = lic_tree
 
     return render(request, 'license_db/main.html', context)
