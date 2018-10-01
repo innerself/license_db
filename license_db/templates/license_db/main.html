@@ -1,6 +1,7 @@
 {% extends "license_db/index.html" %}
 
 {% load static %}
+{% load name_to_tag_part %}
 {% block content %}
   <div class="control-row">
     <div class="input-group control-search-group">
@@ -30,21 +31,21 @@
       {% for category, locations in lic_tree.items %}
         <button class="lic-category-button collapse-button btn"
                 type="button" data-toggle="collapse"
-                data-target="#view-{{ category | cut:" " }}-container">
+                data-target="#view-{{ category | name_to_tag_part }}-container">
           {{ category | capfirst }}
         </button>
 
-        <div id="view-{{ category | cut:" "}}-container"
+        <div id="view-{{ category | name_to_tag_part }}-container"
              class="view-category-container collapse">
 
           {% for location, licenses in locations.items %}
             <button class="lic-location-button collapse-button btn"
                     type="button" data-toggle="collapse"
-                    data-target="#view-{{ category | cut:" "}}-{{ location | cut:" " }}-container">
+                    data-target="#view-{{ category | name_to_tag_part }}-{{ location | name_to_tag_part }}-container">
               {{ location | capfirst }}
             </button>
 
-            <div id="view-{{ category | cut:" "}}-{{ location | cut:" "}}-container"
+            <div id="view-{{ category | name_to_tag_part }}-{{ location | name_to_tag_part }}-container"
                  class="license-group collapse">
               <div class="lic-group-header-row">
                 <span class="lic-group-header-item">Name</span>

@@ -4,11 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+django = "==2.1.2"
 mimesis = "*"
 python-decouple = "*"
 python-ldap = "*"
 django-auth-ldap = "*"
+transliterate = "*"
 
 [dev-packages]
 
