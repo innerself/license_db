@@ -4,7 +4,7 @@ from django.db import OperationalError
 
 from decouple import config
 
-from .models import License, LicenseType, LicenseLocation
+from .models import License, LicenseCategory, LicenseLocation
 
 
 def auth(request, action='login'):
@@ -51,13 +51,13 @@ def index(request):
 
     lic_tree = {}
     for lic in License.objects.all():
-        if lic.type.name not in lic_tree.keys():
-            lic_tree[lic.type.name] = {}
+        if lic.category.name not in lic_tree.keys():
+            lic_tree[lic.category.name] = {}
 
-        if lic.location.name not in lic_tree[lic.type.name].keys():
-            lic_tree[lic.type.name][lic.location.name] = []
+        if lic.location.name not in lic_tree[lic.category.name].keys():
+            lic_tree[lic.category.name][lic.location.name] = []
 
-        lic_tree[lic.type.name][lic.location.name].append(lic)
+        lic_tree[lic.category.name][lic.location.name].append(lic)
 
     context['lic_tree'] = lic_tree
 

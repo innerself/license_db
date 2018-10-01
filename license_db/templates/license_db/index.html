@@ -1,5 +1,5 @@
 {% load static %}<!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:https="http://www.w3.org/1999/xhtml">
 <head>
   <link rel="stylesheet" href="{% static 'license_db/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static "license_db/css/style.css" %}">
@@ -10,11 +10,8 @@
 <body>
   <header>
     {% block header %}
-{#      <svg fill="blue">#}
-{#        <path d="M 0 150 Q 400 175 800 150 L 800 75 L 0 75 Z"></path>#}
-{#      </svg>#}
       <div class="logo"><h5>{{ logo }}</h5></div>
-      <div class="title"><h3>Licenses</h3></div>
+      <div class="title"></div>
       <div class="user">
       {% if request.user.is_authenticated %}
         <span>
@@ -38,9 +35,9 @@
     {% block content %}{% endblock %}
   </main>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="{% static "license_db/js/jquery-3.3.1.min.js" %}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="{% static 'license_db/js/bootstrap.min.js' %}"></script>
+  <script src="{% static "license_db/js/bootstrap.min.js" %}"></script>
   <script src="{% static "license_db/js/main.js" %}"></script>
 </body>
 </html>

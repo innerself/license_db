@@ -5,16 +5,16 @@ from django.db import models
 
 class License(models.Model):
     name = models.CharField('name', max_length=200)
+    category = models.ForeignKey(
+        'LicenseCategory',
+        on_delete=models.CASCADE,
+    )
     location = models.ForeignKey(
         'LicenseLocation',
         on_delete=models.CASCADE,
     )
     type = models.ForeignKey(
         'LicenseType',
-        on_delete=models.CASCADE,
-    )
-    subtype = models.ForeignKey(
-        'LicenseSubtype',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -36,6 +36,16 @@ class License(models.Model):
         business = Business()
         text = Text()
 
+        lic_categories = (
+            'software',
+            'hardware',
+        )
+
+        for lic_category in lic_categories:
+            LicenseCategory.objects.create(
+                name=lic_category,
+            )
+
         lic_locations = (
             'store',
             'central office',
@@ -47,21 +57,11 @@ class License(models.Model):
                 name=lic_location,
             )
 
-        lic_types = (
-            'software',
-            'hardware',
-        )
-
-        for lic_type in lic_types:
-            LicenseType.objects.create(
-                name=lic_type,
-            )
-
         for _ in range(number):
             License.objects.create(
                 name=business.company(),
+                category=choice(LicenseCategory.objects.all()),
                 location=choice(LicenseLocation.objects.all()),
-                type=choice(LicenseType.objects.all()),
                 quantity=randint(0, 10000),
                 comment=text.quote(),
             )
@@ -69,22 +69,22 @@ class License(models.Model):
         return None
 
 
+class LicenseCategory(models.Model):
+    name = models.CharField('category', max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class LicenseLocation(models.Model):
-    name = models.CharField('location', max_length=200)
+    name = models.CharField('location', max_length=200, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class LicenseType(models.Model):
-    name = models.CharField('type', max_length=200)
-
-    def __str__(self):
-        return self.name
-
-
-class LicenseSubtype(models.Model):
-    name = models.CharField('subtype', max_length=200)
+    name = models.CharField('type', max_length=200, unique=True)
 
     def __str__(self):
         return self.name

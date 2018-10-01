@@ -35,7 +35,7 @@
         </button>
 
         <div id="view-{{ category | cut:" "}}-container"
-             class="view-category-container collapse show">
+             class="view-category-container collapse">
 
           {% for location, licenses in locations.items %}
             <button class="lic-location-button collapse-button btn"
@@ -45,7 +45,7 @@
             </button>
 
             <div id="view-{{ category | cut:" "}}-{{ location | cut:" "}}-container"
-                 class="license-group collapse show">
+                 class="license-group collapse">
               <div class="lic-group-header-row">
                 <span class="lic-group-header-item">Name</span>
                 <span class="lic-group-header-item">Type</span>
@@ -57,7 +57,7 @@
               {% for license in licenses %}
                 <div class="lic-group-item">
                   <span class="lic-name">{{ license.name }}</span>
-                  <span class="lic-name">{{ license.subtype | default_if_none:'-' }}</span>
+                  <span class="lic-type">{{ license.type | default_if_none:'-' }}</span>
                   <span class="lic-quantity">{{ license.quantity }}</span>
                   <span class="lic-expires">{{ license.expires | date:'d.m.Y' }}</span>
                   <span class="lic-comment">{{ license.comment | default:'-' }}</span>

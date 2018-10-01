@@ -11,7 +11,9 @@
       {% csrf_token %}
       <div id="login-login" class="input-group">
         <div class="input-group-prepend">
-          <span class="input-group-text">{{ login.prefix }}</span>
+          <span id="domain-prepend"
+                class="input-group-text">{{ login.prefix }}
+          </span>
         </div>
         <input name="username" type="text"
                class="form-control" placeholder="{{ login.placeholder }}" />
@@ -21,7 +23,7 @@
                class="form-control" placeholder="Password" />
       </div>
       <button id="login-submit" type="submit"
-              class="btn btn-secondary">Login</button>
+              class="btn">Login</button>
     </form>
   </div>
 

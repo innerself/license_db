@@ -3,8 +3,10 @@ const licenseRows = $(".lic-group-item");
 
 const btnExpand = $("#expand-all");
 const btnCollapse = $("#collapse-all");
-const groupBtn = $(".collapse-button");
-// const groupBtn = $(".lic-category-button");
+// const categoryBtn = $(".lic-category-button");
+// const locationBtn = $(".lic-location-button");
+const categoryContainer = $(".view-category-container");
+const licenseGroup = $(".license-group");
 
 function rowHasText(row, text) {
   let hasText = false;
@@ -22,35 +24,105 @@ function rowHasText(row, text) {
   return hasText
 }
 
+function locationIsVisible(location) {
+  return location.children('.lic-group-item').is(':visible');
+}
+
+function hideLocation(location) {
+  const locationId = location.attr('id');
+  const locationBtn = $('[data-target="#' + locationId + '"]');
+  const locationGroup = $('#' + locationId);
+
+  locationGroup.hide();
+  locationBtn.hide();
+
+  return null
+}
+
+function showLocation(location) {
+  const locationId = location.attr('id');
+  const locationBtn = $('[data-target="#' + locationId + '"]');
+  const locationGroup = $('#' + locationId);
+
+  // locationGroup.show();
+  // locationBtn.show();
+
+  locationGroup.removeAttr('style');
+  locationBtn.removeAttr('style');
+
+  return null
+}
+
+// $(document).ready(function () {
+//   licenseRows.hide();
+// });
+
 searchArea.on("input", function () {
   const currentSearch = $(this).val();
 
   licenseRows.each(function () {
     const currentRow = $(this);
+    const currentLocation = currentRow.parent();
 
     if (rowHasText(currentRow, currentSearch)) {
-      currentRow.show()
+        // currentRow.show();
+      currentRow.removeAttr('style');
+      showLocation(currentLocation);
+      // }
+
       // TODO Highlight found text in the row (make red)
     } else {
-      currentRow.hide()
-      // TODO Hide category if it becomes empty
+      currentRow.hide();
+      // currentRow.addClass('collapsed');
+
+      if (!locationIsVisible(currentLocation)) {
+        hideLocation(currentLocation);
+      }
     }
   })
 });
 
 btnExpand.click(function () {
-  groupBtn.each(function () {
-    if ($(this).hasClass("collapsed")) {
-      $(this).click()
+  categoryContainer.each(function () {
+    if (!($(this).is(':visible'))) {
+      const categoryId = $(this).attr('id');
+      const categoryBtn = $('[data-target="#' + categoryId + '"]');
+
+      categoryBtn.click();
     }
-  })
+  });
+
+  setTimeout(function () {
+    licenseGroup.each(function () {
+      if (!($(this).is(':visible'))) {
+        const locationId = $(this).attr('id');
+        const locationBtn = $('[data-target="#' + locationId + '"]');
+
+        locationBtn.click();
+      }
+    });
+  }, 350)
 });
 
 btnCollapse.click(function () {
-  groupBtn.each(function () {
-    if (!($(this).hasClass("collapsed"))) {
-      $(this).click()
+  licenseGroup.each(function () {
+    if ($(this).is(':visible')) {
+      const locationId = $(this).attr('id');
+      const locationBtn = $('[data-target="#' + locationId + '"]');
+
+      locationBtn.click();
     }
-  })
+  });
+
+  setTimeout(function () {
+    categoryContainer.each(function () {
+      if ($(this).is(':visible')) {
+        const categoryId = $(this).attr('id');
+        const categoryBtn = $('[data-target="#' + categoryId + '"]');
+
+        categoryBtn.click();
+      }
+    });
+  }, 350)
 });
 
