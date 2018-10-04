@@ -3,10 +3,11 @@ const licenseRows = $(".lic-group-item");
 
 const btnExpand = $("#expand-all");
 const btnCollapse = $("#collapse-all");
-// const categoryBtn = $(".lic-category-button");
-// const locationBtn = $(".lic-location-button");
 const categoryContainer = $(".view-category-container");
 const licenseGroup = $(".license-group");
+
+const fileUploadInput = $('#file-upload-input');
+const fileUploadLabel = $('#file-upload-label');
 
 function rowHasText(row, text) {
   let hasText = false;
@@ -44,18 +45,11 @@ function showLocation(location) {
   const locationBtn = $('[data-target="#' + locationId + '"]');
   const locationGroup = $('#' + locationId);
 
-  // locationGroup.show();
-  // locationBtn.show();
-
   locationGroup.removeAttr('style');
   locationBtn.removeAttr('style');
 
   return null
 }
-
-// $(document).ready(function () {
-//   licenseRows.hide();
-// });
 
 searchArea.on("input", function () {
   const currentSearch = $(this).val();
@@ -65,15 +59,12 @@ searchArea.on("input", function () {
     const currentLocation = currentRow.parent();
 
     if (rowHasText(currentRow, currentSearch)) {
-        // currentRow.show();
       currentRow.removeAttr('style');
       showLocation(currentLocation);
-      // }
 
       // TODO Highlight found text in the row (make red)
     } else {
       currentRow.hide();
-      // currentRow.addClass('collapsed');
 
       if (!locationIsVisible(currentLocation)) {
         hideLocation(currentLocation);
@@ -126,3 +117,7 @@ btnCollapse.click(function () {
   }, 350)
 });
 
+fileUploadInput.on('change', function () {
+  let fileName = $(this).val().split('\\').pop();
+  fileUploadLabel.html(fileName);
+});

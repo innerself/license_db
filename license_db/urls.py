@@ -8,4 +8,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('auth/', views.auth, name='auth'),
     path('auth/<str:action>/', views.auth, name='auth'),
+    path('import/', views.import_data, name='import_data'),
 ]

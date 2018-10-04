@@ -1,6 +1,8 @@
-from datetime import date, timedelta
+from datetime import date
 
 from django.db import models
+
+from license_db.utils import year_after
 
 
 class License(models.Model):
@@ -20,7 +22,7 @@ class License(models.Model):
         null=True,
     )
     quantity = models.PositiveIntegerField('quantity', default=0)
-    expires = models.DateField('expires', default=date.today() + timedelta(days=365))
+    expires = models.DateField('expires', default=year_after())
     comment = models.CharField('comment', max_length=200, blank=True)
     created = models.DateTimeField('created', auto_now_add=True)
     modified = models.DateTimeField('modified', auto_now=True)
@@ -85,6 +87,29 @@ class LicenseLocation(models.Model):
 
 class LicenseType(models.Model):
     name = models.CharField('type', max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ExcelEntry:
+    def __init__(
+            self,
+            name: str,
+            category: str,
+            location: str,
+            expires: date=year_after(),
+            lic_type: str='',
+            quantity: int=0,
+            comment: str='',
+    ):
+        self.name = name
+        self.category = category
+        self.location = location
+        self.expires = expires
+        self.type = lic_type
+        self.quantity = quantity
+        self.comment = comment
 
     def __str__(self):
         return self.name

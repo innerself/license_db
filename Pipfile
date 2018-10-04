@@ -10,6 +10,7 @@ python-decouple = "*"
 python-ldap = "*"
 django-auth-ldap = "*"
 transliterate = "*"
+openpyxl = "*"
 
 [dev-packages]
 

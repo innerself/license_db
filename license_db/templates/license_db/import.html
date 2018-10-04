@@ -1,0 +1,31 @@
+{% extends "license_db/index.html" %}
+
+{% load static %}
+{% block content %}
+  <div class="control-row">
+    <form  enctype="multipart/form-data" method="post"
+          action="{% url 'license_db:import_data' %}">
+      {% csrf_token %}
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <img src="{% static "license_db/img/file.svg" %}">
+          </span>
+        </div>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input"
+                 id="file-upload-input" name="file">
+          <label class="custom-file-label" id="file-upload-label"
+                 for="file-upload-input">choose file</label>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button name="preview" value="preview"
+                type="submit" class="btn">Preview</button>
+        <button name="import" value="submit"
+                type="submit" class="btn">Import</button>
+      </div>
+    </form>
+
+  </div>
+{% endblock %}
