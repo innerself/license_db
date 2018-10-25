@@ -1,31 +1,104 @@
 {% extends "license_db/index.html" %}
 
 {% load static %}
-{% block content %}
-  <div class="control-row">
-    <form  enctype="multipart/form-data" method="post"
-          action="{% url 'license_db:import_data' %}">
+{% load name_to_tag_part %}
+{% block main %}
+  <div class="import-control-row">
+    <div class="input-group control-search-group" id="import-search">
+      <div class="input-group-prepend">
+        <span class="input-group-text control-prepend-icon">
+          <img src="{% static "license_db/img/search.svg" %}">
+        </span>
+      </div>
+      <input id="search-area" type="search"
+             class="form-control" placeholder="type to search">
+    </div>
+
+    <div class="input-group control-collapse-group" id="import-collapse">
+      <div class="btn-group">
+        <span id="expand-all" class="btn control-button" title="Expand all">
+          <img src="{% static "license_db/img/chevrons-down.svg" %}">
+        </span>
+        <span id="collapse-all" class="btn control-button" title="Collapse all">
+          <img src="{% static "license_db/img/chevrons-up.svg" %}">
+        </span>
+      </div>
+    </div>
+
+    <form enctype="multipart/form-data" method="post"
+          action="{% url 'license_db:import_data' %}" id="import-form">
       {% csrf_token %}
       <div class="input-group">
         <div class="input-group-prepend">
-          <span class="input-group-text">
+          <span class="input-group-text control-prepend-icon">
             <img src="{% static "license_db/img/file.svg" %}">
           </span>
         </div>
         <div class="custom-file">
-          <input type="file" class="custom-file-input"
+          <input type="file" class="custom-file-input control-button"
                  id="file-upload-input" name="file">
           <label class="custom-file-label" id="file-upload-label"
                  for="file-upload-input">choose file</label>
         </div>
       </div>
-      <div class="btn-group">
+
+      <span class="btn-group control-preview-import-group">
         <button name="preview" value="preview"
-                type="submit" class="btn">Preview</button>
+                type="submit" class="btn control-button">Preview</button>
         <button name="import" value="submit"
-                type="submit" class="btn">Import</button>
+                type="submit" class="btn control-button">Import</button>
+      </span>
+      <div class="btn-group">
+          <button name="reset" value="reset"
+                  type="submit" class="btn control-button">Reset</button>
       </div>
     </form>
-
   </div>
+
+  {% if lic_tree %}
+    <div class="view-page-container">
+      {% for category, locations in lic_tree.items %}
+        <button class="lic-category-button collapse-button btn"
+                type="button" data-toggle="collapse"
+                data-target="#view-{{ category | name_to_tag_part }}-container">
+          {{ category | capfirst }}
+        </button>
+
+        <div id="view-{{ category | name_to_tag_part }}-container"
+             class="view-category-container collapse">
+
+          {% for location, licenses in locations.items %}
+            <button class="lic-location-button collapse-button btn"
+                    type="button" data-toggle="collapse"
+                    data-target="#view-{{ category | name_to_tag_part }}-{{ location | name_to_tag_part }}-container">
+              {{ location | capfirst }}
+            </button>
+
+            <div id="view-{{ category | name_to_tag_part }}-{{ location | name_to_tag_part }}-container"
+                 class="license-group collapse">
+              <div class="lic-group-header-row">
+                <span class="lic-group-header-item">Name</span>
+                <span class="lic-group-header-item">Type</span>
+                <span class="lic-group-header-item">Quantity</span>
+                <span class="lic-group-header-item">Expires</span>
+                <span class="lic-group-header-item">Comment</span>
+              </div>
+
+              {% for license in licenses %}
+                <div class="lic-group-item">
+                  <span class="lic-name">{{ license.name }}</span>
+                  <span class="lic-type">{{ license.type | default_if_none:'-' }}</span>
+                  <span class="lic-quantity">{{ license.quantity }}</span>
+                  <span class="lic-expires">{{ license.expires | date:'d.m.Y' }}</span>
+                  <span class="lic-comment">{{ license.comment | default:'-' }}
+
+                  </span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 {% endblock %}

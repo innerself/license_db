@@ -8,7 +8,7 @@ from openpyxl import load_workbook
 
 from license_db.handlers import save_to_disk
 from license_db.utils import excel_columns, prepare_cell_value
-from .models import License, ExcelEntry
+from .models import License, ExcelEntry, LicenseCategory, LicenseLocation, LicenseType
 from .forms import UploadFileForm
 
 
@@ -38,14 +38,14 @@ def auth(request, action='login'):
 
         if user is not None and user.is_staff:
             login(request, user)
-            return redirect('license_db:index')
+            return redirect('license_db:view')
         else:
             context['access_denied'] = True
 
     return render(request, 'license_db/auth.html', context)
 
 
-def index(request):
+def view(request):
     if request.user.is_anonymous:
         return redirect('license_db:auth')
 
@@ -66,7 +66,7 @@ def index(request):
 
     context['lic_tree'] = lic_tree
 
-    return render(request, 'license_db/main.html', context)
+    return render(request, 'license_db/view.html', context)
 
 
 def parse_excel(file_path: str) -> List[ExcelEntry]:
@@ -94,18 +94,76 @@ def parse_excel(file_path: str) -> List[ExcelEntry]:
     return entries
 
 
-def show_preview(request, saved_file_info: dict):
+def preview_import(request):
+    saved_file_info = request.session['saved_file_info']
     entries = parse_excel(saved_file_info['path'])
+    request.session['entries'] = entries
 
-    print()
+    lic_tree = {}
+    for lic in entries:
+        if lic.category not in lic_tree.keys():
+            lic_tree[lic.category] = {}
+
+        if lic.location not in lic_tree[lic.category].keys():
+            lic_tree[lic.category][lic.location] = []
+
+        lic_tree[lic.category][lic.location].append(lic)
 
     context = {
         'logo': config('LOGO', default='My Logo'),
         'site_title': config('SITE_TITLE', default='My Site'),
-        # 'form': form,
+        'lic_tree': lic_tree,
     }
 
-    return render(request, 'license_db/preview.html', context)
+    return render(request, 'license_db/import.html', context)
+
+
+def submit_import(request) -> None:
+    request.session['entries']: ExcelEntry
+    entries = request.session['entries']
+
+    for entry in entries:
+        existing_category = LicenseCategory.objects.filter(
+            name=entry.category
+        )
+
+        if existing_category:
+            category = existing_category
+        else:
+            category = LicenseCategory(name=entry.category)
+            category.save()
+
+        existing_location = LicenseLocation.objects.filter(
+            name=entry.location
+        )
+
+        if existing_location:
+            location = existing_location
+        else:
+            location = LicenseLocation(name=entry.location)
+            location.save()
+
+        existing_type = LicenseType.objects.filter(
+            name=entry.type
+        )
+
+        if existing_type:
+            lic_type = existing_type
+        else:
+            lic_type = LicenseType(name=entry.type)
+            lic_type.save()
+
+        License.objects.create(
+            name=entry.name,
+            category=category,
+            location=location,
+            type=lic_type,
+            quantity=entry.quantity,
+            expires=entry.expires,
+            comment=entry.comment,
+        )
+
+    return None
 
 
 def import_data(request):
@@ -117,15 +175,16 @@ def import_data(request):
 
         if form.is_valid():
             saved_file_info = save_to_disk(request.FILES['file'])
+            request.session['saved_file_info'] = saved_file_info
 
             preview_pressed = bool(request.POST.get('preview'))
             submit_pressed = bool(request.POST.get('submit'))
 
             if preview_pressed:
-                show_preview(request, saved_file_info)
+                return redirect('license_db:preview_import')
 
             if submit_pressed:
-                submit_import(request, saved_file_info)
+                submit_import(request)
     else:
         form = UploadFileForm()
 

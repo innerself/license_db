@@ -102,6 +102,7 @@ class ExcelEntry:
             lic_type: str='',
             quantity: int=0,
             comment: str='',
+            exists: bool=False,
     ):
         self.name = name
         self.category = category
@@ -110,6 +111,7 @@ class ExcelEntry:
         self.type = lic_type
         self.quantity = quantity
         self.comment = comment
+        self.exists = exists
 
     def __str__(self):
         return self.name

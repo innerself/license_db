@@ -88,8 +88,46 @@ footer {
 
 .control-row {
   display: grid;
+  /*grid-template-columns: auto min-content;*/
   grid-template-columns: auto min-content;
+  /*grid-template-columns: auto min-content;*/
   grid-gap: 1em;
+}
+
+.import-control-row {
+  display: grid;
+  /*grid-template-columns: auto min-content;*/
+  /*grid-template-columns: auto min-content auto;*/
+  grid-template-columns: 4fr min-content 5fr;
+  /*grid-template-columns: auto min-content;*/
+  grid-gap: 1em;
+}
+
+/*#import-search {*/
+  /*display: grid;*/
+/*}*/
+
+
+.control-prepend-icon {
+  background-color: #f6f6f6;
+}
+
+#file-upload-label:after {
+  background-color: white;
+  color: #212529;
+}
+
+.control-button {
+  background-color: white;
+  border: 1px solid #ced4da;
+}
+
+.control-button:hover {
+  background-color: #f6f6f6;
+}
+
+.control-preview-import-group {
+  margin: 0 1em;
 }
 
 .control-search-group .input-group-text {
@@ -180,7 +218,7 @@ footer {
 .lic-group-header-row,
 .lic-group-item {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr 1fr 6fr;
+  grid-template-columns: 2fr 3fr 1fr 1fr 2fr;
 }
 
 .lic-group-header-row {
@@ -215,4 +253,8 @@ footer {
 
 .lic-group-item:hover {
   background-color: #f6f6f6;
+}
+
+#import-form {
+  display: flex;
 }

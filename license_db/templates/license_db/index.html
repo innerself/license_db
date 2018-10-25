@@ -15,7 +15,7 @@
       <div class="user">
       {% if request.user.is_authenticated %}
         <span>
-          <a href="{% url 'license_db:index' %}" title="View">
+          <a href="{% url 'license_db:view' %}" title="View">
             <img class="header-button" id="button-view"
                  src="{% static 'license_db/img/view.svg' %}">
           </a>
@@ -46,7 +46,8 @@
   </header>
 
   <main>
-    {% block content %}{% endblock %}
+    {% block main %}{% endblock %}
+{#    {% block content %}{% endblock %}#}
   </main>
 
   <script src="{% static "license_db/js/jquery-3.3.1.min.js" %}"></script>
