@@ -92,6 +92,19 @@ class LicenseType(models.Model):
         return self.name
 
 
+class ImportLicense(models.Model):
+    name = models.CharField(max_length=200)
+    category = models.CharField(max_length=200)
+    location = models.CharField(max_length=200)
+    type = models.CharField(max_length=200)
+    quantity = models.PositiveIntegerField(default=0)
+    expires = models.DateField(default=year_after())
+    comment = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class ExcelEntry:
     def __init__(
             self,

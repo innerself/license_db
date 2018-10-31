@@ -38,7 +38,14 @@
           <input type="file" class="custom-file-input control-button"
                  id="file-upload-input" name="file">
           <label class="custom-file-label" id="file-upload-label"
-                 for="file-upload-input">choose file</label>
+                 for="file-upload-input">
+            {% if import_file_name %}
+              {{ import_file_name }}
+            {% else %}
+              choose file
+            {% endif %}
+
+          </label>
         </div>
       </div>
 
