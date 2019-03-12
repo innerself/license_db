@@ -79,6 +79,9 @@ def parse_excel(file_path: str) -> None:
     next(rows)  # skip header row
 
     for row in rows:
+        if not prepare_cell_value(row, 'name'):
+            break
+
         ImportLicense.objects.create(
             name=prepare_cell_value(row, 'name'),
             category=prepare_cell_value(row, 'category'),
